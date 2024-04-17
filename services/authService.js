@@ -1,4 +1,5 @@
 // services/authService.js
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { generateAPIKey } = require('../utils/apiKeyGenerator');
 
@@ -17,3 +18,25 @@ exports.login = async (username, password) => {
 exports.findUserById = async (userId) => {
   return await User.findById(userId);
 };
+
+exports.verifyToken = (token) => {
+    try {
+      const decoded = jwt.verify(token, 'your_secret_key');
+      return decoded.userId;
+    } catch (err) {
+      throw new Error('Invalid token');
+    }
+  };
+  
+  exports.authorizeUser = async (userId, requiredRole) => {
+    const user = await exports.findUserById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+  
+    if (user.role !== requiredRole) {
+      throw new Error('Unauthorized');
+    }
+  
+    return user;
+  };
