@@ -12,4 +12,4 @@ const {initializeRealtime} = require("./utils/realtime");
 
 
 const app = express();
-const port =
+const port = process.env.PORT || 3000;
