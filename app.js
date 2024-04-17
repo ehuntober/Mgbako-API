@@ -1,37 +1,39 @@
 // app.js
 const express = require('express');
-const bodyParser = require("body-parser");
-const cors = require('cors')
-const mongoose =  require("mongoose");
-
-const authRoutes = require("./routes/authRoutes");
-const forumRoutes = require("./routes/forumRoutes");
-const postRoutes = require("./routes/postRoutes");
-const { verifyAPIKey } = require("./utils/middleware");
-const {initializeRealtime} = require("./utils/realtime");
-
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const authRoutes = require('./routes/authRoutes');
+const forumRoutes = require('./routes/forumRoutes');
+const postRoutes = require('./routes/postRoutes');
+const userController = require('./controllers/userController');
+const postController = require('./controllers/postController');
+const { verifyAPIKey } = require('./utils/middleware');
+const { initializeRealtime } = require('./utils/realtime');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-
-// connect to MongoDB
-const dbConnect = () =>{
-    try{
-        const conn = mongoose.connect(process.env.MONGODB_URL)
-        console.log("Database connected successfully")
-    } catch(error){
-        console.log('Database error')
-    }
-}
-
-dbConnect()
-
+// Connect to MongoDB
+const dbConnect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      useCreateIndex: true,
+    });
+    console.log('Database connected successfully');
+  } catch (error) {
+    console.log('Database error', error);
+  }
+};
+dbConnect();
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors())
+app.use(cors());
 
 // Initialize real-time updates
 initializeRealtime(app);
@@ -40,7 +42,6 @@ initializeRealtime(app);
 app.use('/api/auth', authRoutes);
 app.use('/api/forums', verifyAPIKey, forumRoutes);
 app.use('/api/posts', verifyAPIKey, postRoutes);
-
 
 const multer = require('multer');
 const path = require('path');
@@ -58,7 +59,7 @@ const upload = multer({ storage });
 
 // Add the upload middleware to the appropriate routes
 app.post('/api/users/avatar', verifyAPIKey, upload.single('avatar'), userController.updateAvatar);
-app.post('/api/posts/attachments', verifyAPIKey, upload.array('attachments'), postController.addAttachments);
+app.post('/api/posts/:postId/attachments', verifyAPIKey, upload.array('attachments'), postController.addAttachments);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

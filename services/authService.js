@@ -1,6 +1,7 @@
 // services/authService.js
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+// services/authService.js
 const { generateAPIKey } = require('../utils/apiKeyGenerator');
 
 exports.register = async (username, password) => {

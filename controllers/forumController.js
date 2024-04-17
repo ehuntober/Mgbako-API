@@ -21,10 +21,29 @@ exports.createForum = async (req, res) => {
   }
 };
 
+exports.deleteForum = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await forumService.deleteForum(id);
+      res.sendStatus(204);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  };
+
 // Implement the rest of the forum controller functions
 
 
-
+exports.updateForum = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, description } = req.body;
+      const updatedForum = await forumService.updateForum(id, title, description);
+      res.json(updatedForum);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  };
 
 
 
