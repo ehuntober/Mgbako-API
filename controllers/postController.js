@@ -60,3 +60,25 @@ exports.addAttachments = async (req, res) => {
       res.status(400).json({ error: err.message });
     }
   };
+
+
+  exports.updatePost = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, content } = req.body;
+      const updatedPost = await postService.updatePost(id, title, content);
+      res.json(updatedPost);
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  };
+  
+  exports.deletePost = async (req, res) => {
+    try {
+      const { id } = req.params;
+      await postService.deletePost(id);
+      res.json({ message: 'Post deleted' });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  };

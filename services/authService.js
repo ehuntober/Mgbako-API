@@ -11,7 +11,9 @@ exports.register = async (username, password) => {
 };
 
 exports.login = async (username, password) => {
+    
   const user = await User.findByCredentials(username, password);
+
   const apiKey = generateAPIKey(user._id);
   return { user, apiKey };
 };

@@ -11,6 +11,9 @@ const postController = require('./controllers/postController');
 const { verifyAPIKey } = require('./utils/middleware');
 const { initializeRealtime } = require('./utils/realtime');
 
+require('dotenv').config();
+
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -18,10 +21,6 @@ const port = process.env.PORT || 3000;
 const dbConnect = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
     });
     console.log('Database connected successfully');
   } catch (error) {
