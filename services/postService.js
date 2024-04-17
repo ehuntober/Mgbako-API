@@ -1,14 +1,21 @@
 // services/postService.js
 const Post = require('../models/Post');
+const { emitPostCreated } = require('../utils/realtime');
 
 exports.getPostsByForum = async (forumId) => {
   return await Post.find({ forumId });
 };
 
+// exports.createPost = async (title, content, createdBy, forumId) => {
+//   const post = await Post.create({ title, content, createdBy, forumId, approved: false });
+//   return post;
+// };
+
 exports.createPost = async (title, content, createdBy, forumId) => {
-  const post = await Post.create({ title, content, createdBy, forumId, approved: false });
-  return post;
-};
+    const post = await Post.create({ title, content, createdBy, forumId, approved: false });
+    emitPostCreated(post);
+    return post;
+  };
 
 exports.approvePost = async (postId) => {
   const post = await Post.findById(postId);
