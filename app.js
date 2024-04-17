@@ -41,6 +41,25 @@ app.use('/api/auth', authRoutes);
 app.use('/api/forums', verifyAPIKey, forumRoutes);
 app.use('/api/posts', verifyAPIKey, postRoutes);
 
+
+const multer = require('multer');
+const path = require('path');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}${path.extname(file.originalname)}`);
+  },
+});
+
+const upload = multer({ storage });
+
+// Add the upload middleware to the appropriate routes
+app.post('/api/users/avatar', verifyAPIKey, upload.single('avatar'), userController.updateAvatar);
+app.post('/api/posts/attachments', verifyAPIKey, upload.array('attachments'), postController.addAttachments);
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

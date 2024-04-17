@@ -22,3 +22,19 @@ exports.createForum = async (req, res) => {
 };
 
 // Implement the rest of the forum controller functions
+
+
+
+
+
+
+// controllers/forumController.js
+exports.getAllForums = async (req, res) => {
+    try {
+      const { page, limit, sortBy, sortOrder } = req.query;
+      const forums = await forumService.getAllForums(page, limit, sortBy, sortOrder);
+      res.json(forums);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };

@@ -32,3 +32,31 @@ exports.banUser = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+
+
+
+exports.getPostsByForum = async (req, res) => {
+    try {
+      const { forumId } = req.params;
+      const { page, limit, sortBy, sortOrder } = req.query;
+      const posts = await postService.getPostsByForum(forumId, page, limit, sortBy, sortOrder);
+      res.json(posts);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
+
+
+
+  // controllers/postController.js
+exports.addAttachments = async (req, res) => {
+    try {
+      const { postId } = req.params;
+      const attachmentPaths = req.files.map((file) => file.path);
+      await postService.addAttachments(postId, attachmentPaths);
+      res.json({ message: 'Attachments added' });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+    }
+  };
