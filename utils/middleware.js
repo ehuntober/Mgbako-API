@@ -1,3 +1,5 @@
+// utils/middleware.js
+
 const authService = require('../services/authService');
 
 exports.verifyAPIKey = async (req, res, next) => {

@@ -1,3 +1,5 @@
+// controlers/userController
+
 exports.updateAvatar = async (req, res) => {
     try {
       const userId = req.user.id;
