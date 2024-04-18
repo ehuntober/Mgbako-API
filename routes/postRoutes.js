@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get('/', verifyAPIKey, postController.getAllPosts);
+router.get('/', verifyAPIKey, (req, res) => postController.getAllPosts(req, res));
 router.post('/', verifyAPIKey, verifyToken, postController.createPost);
 router.put('/:id', verifyAPIKey, verifyToken, postController.updatePost);
 router.delete('/:id', verifyAPIKey, verifyToken, postController.deletePost);
