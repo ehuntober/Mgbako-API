@@ -1,26 +1,37 @@
 // services/authService.js
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { generateAPIKey } = require('../utils/apiKeyGenerator');
+
+const JWT_SECRET = 'your_secret_key';
 
 exports.register = async (username, password) => {
   const user = await User.create({ username, password });
-  return { user, apiKey: user.apiKey };
+  return user;
 };
 
 exports.login = async (username, password) => {
   const user = await User.findByCredentials(username, password);
-  return { user, apiKey: user.apiKey };
+  const token = generateJWT(user._id);
+  const apiKey = user.apiKey;
+  return { user, token, apiKey };
 };
 
 exports.findUserById = async (userId) => {
   return await User.findById(userId);
 };
 
-exports.verifyAPIKey = async (apiKey) => {
-  const user = await User.findOne({ apiKey });
-  if (!user) {
-    throw new Error('Invalid API key');
+exports.verifyToken = async (token) => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await exports.findUserById(decoded.userId);
+    if (!user) {
+      throw new Error('Invalid token');
+    }
+    return user;
+  } catch (err) {
+    throw new Error('Invalid token');
   }
-  return user;
 };
 
 exports.authorizeUser = async (userId, requiredRole) => {
@@ -32,4 +43,8 @@ exports.authorizeUser = async (userId, requiredRole) => {
     throw new Error('Unauthorized');
   }
   return user;
+};
+
+const generateJWT = (userId) => {
+  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: '1h' });
 };
