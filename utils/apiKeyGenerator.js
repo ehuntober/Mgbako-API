@@ -22,5 +22,5 @@ const generateAPIKey = (userId) => {
 };
 
 module.exports = {
-  generateAPIKey,
+  generateAPIKey
 };
