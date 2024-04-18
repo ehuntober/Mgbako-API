@@ -69,9 +69,10 @@
 
 // module.exports = mongoose.model('User', userSchema);
 
-
+// models/User.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { generateAPIKey } = require('../utils/apiKeyGenerator');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -108,7 +109,7 @@ userSchema.pre('save', async function(next) {
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
 
-  if (this.isNew || this.isModified('apiKey')) {
+  if (this.isNew) {
     this.apiKey = await generateAPIKey(this._id);
   }
 
@@ -128,11 +129,6 @@ userSchema.statics.findByCredentials = async function(username, password) {
   }
 
   return user;
-};
-
-const generateAPIKey = async (userId) => {
-  const { generateAPIKey } = require('../utils/apiKeyGenerator');
-  return generateAPIKey(userId);
 };
 
 module.exports = mongoose.model('User', userSchema);
