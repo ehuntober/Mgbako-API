@@ -14,6 +14,7 @@ const Forum = require('../models/Forum'); // Import the Forum model
 exports.approvePost = async (postId, forumId) => {
   console.log(postId, forumId);
   const post = await Post.findById(postId);
+  console.log(post);
   if (!post) {
     throw new Error('Post not found');
   }
@@ -38,13 +39,14 @@ exports.approvePost = async (postId, forumId) => {
   // Add the approved post to the forum
   const forum = await Forum.findById(forumId);
   if (forum) {
-    forum.posts.push(post._id);
-    // console.log(forum)
+    forum.posts.push(post._id.toString()); // Convert post._id to string
+    console.log(forum); // Log the updated forum document
     await forum.save();
   }
 
   return post;
 };
+
 
 
 exports.getPostsByForum = async (forumId) => {
