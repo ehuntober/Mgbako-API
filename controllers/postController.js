@@ -6,7 +6,9 @@ exports.createPost = async (req, res) => {
     const createdBy = req.user.id;
     const post = await postService.createPost(title, content, createdBy, forumId);
     res.status(201).json(post);
+    
   } catch (err) {
+    console.log(err)
     res.status(400).json({ error: err.message });
   }
 };
