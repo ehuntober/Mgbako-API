@@ -6,27 +6,56 @@ const emailService = require('./emailService');
 const sentimentService = require('./sentimentService');
 const webhookService = require('./webhookService');
 
+// exports.approvePost = async (postId) => {
+//   const post = await Post.findById(postId);
+//   console.log(post)
+//   post.approved = true;
+//   await post.save();
+
+//   // Send email notification to the post author
+//   const author = await User.findById(post.createdBy);
+//   await emailService.sendEmail(
+//     author.email,
+//     'Your post has been approved',
+//     `Your post "${post.title}" has been approved and is now visible on the forum.`
+//   );
+
+//   // Analyze sentiment of the post content
+//   const sentiment = await sentimentService.analyzeSentiment(post.content);
+//   post.sentiment = sentiment;
+//   await post.save();
+
+//   return post;
+// };
+
+
 exports.approvePost = async (postId) => {
   const post = await Post.findById(postId);
-  console.log(post)
+  
+  if (!post) {
+    throw new Error('Post not found');
+  }
+
+  // Update post properties
   post.approved = true;
   await post.save();
 
-  // // Send email notification to the post author
-  // const author = await User.findById(post.createdBy);
-  // await emailService.sendEmail(
-  //   author.email,
-  //   'Your post has been approved',
-  //   `Your post "${post.title}" has been approved and is now visible on the forum.`
-  // );
+  // Send email notification to the post author
+  const author = await User.findById(post.createdBy);
+  await emailService.sendEmail(
+    author.email,
+    'Your post has been approved',
+    `Your post "${post.title}" has been approved and is now visible on the forum.`
+  );
 
-  // // Analyze sentiment of the post content
-  // const sentiment = await sentimentService.analyzeSentiment(post.content);
-  // post.sentiment = sentiment;
-  // await post.save();
+  // Analyze sentiment of the post content
+  const sentiment = await sentimentService.analyzeSentiment(post.content);
+  post.sentiment = sentiment;
+  await post.save();
 
   return post;
 };
+
 
 
 exports.getPostsByForum = async (forumId) => {
