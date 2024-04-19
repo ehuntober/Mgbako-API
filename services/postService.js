@@ -38,12 +38,12 @@ exports.getPostsByForum = async (forumId) => {
 // };
 
 exports.createPost = async (title, content, createdBy, forumId) => {
-    const post = await Post.create({ title, content, createdBy, forumId, approved: false });
-    emitPostCreated(post);
-    // Send webhook notification to the post author
-    await webhookService.sendWebhook('https://example.com/webhook', 'post_created', post);
-    return post;
-  };
+  const post = await Post.create({ title, content, createdBy, forumId, approved: false });
+  emitPostCreated(post);
+  await webhookService.sendWebhook('https://example.com/webhook', 'post_created', post);
+  return post;
+};
+
 
 exports.approvePost = async (postId) => {
   const post = await Post.findById(postId);
