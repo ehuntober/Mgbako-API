@@ -1,18 +1,15 @@
 // controllers/postController.js
 const postService = require('../services/postService');
-
 exports.createPost = async (req, res) => {
   try {
-    const { title, content } = req.body;
+    const { title, content, forumId } = req.body;
     const createdBy = req.user.id;
-    const forumId = req.params.forumId; // assuming you're passing the forumId in the request params
     const post = await postService.createPost(title, content, createdBy, forumId);
     res.status(201).json(post);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
-
 
 exports.approvePost = async (req, res) => {
   try {
