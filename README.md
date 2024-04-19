@@ -43,3 +43,20 @@ The initializeRealtime function in the app.js file suggests that you have implem
 Overall, the code you've provided so far is a solid foundation for the community forum API. The next steps would be to implement the missing functionality, such as the forum and post management, and continue to refine and expand the application based on your specific requirements.
 
 Let me know if you have any specific questions or if you need further assistance with any part of the implementation.
+
+
+Forums:
+Any user with the "moderator" or "admin" role can create a new forum by sending a POST request to /forums with the title and description of the forum.
+Users with the "moderator" or "admin" role can also update or delete existing forums by sending PUT or DELETE requests to /forums/:id, respectively.
+Any user (including regular users) can retrieve a list of all available forums by sending a GET request to /forums.
+Posts:
+Any authenticated user can create a new post within a specific forum by sending a POST request to /posts with the title, content, and forumId (the ID of the forum where the post will be created).
+Authenticated users can update or delete their own posts by sending PUT or DELETE requests to /posts/:id, respectively.
+Any user can retrieve a list of all posts by sending a GET request to /posts. They can also filter the posts by forumId to get only the posts within a specific forum.
+Authenticated users can add attachments to their posts by sending a POST request to /posts/:postId/attachments with the attachment files.
+So, the typical workflow would be:
+
+A user with the "moderator" or "admin" role creates a new forum by sending a POST request to /forums.
+Regular users can then create new posts within that forum by sending a POST request to /posts with the forumId of the desired forum.
+Other users can view and interact with the posts within that forum by sending GET, PUT, DELETE, or POST (for attachments) requests to the appropriate /posts endpoints.
+This way, the forums serve as categories or topics, and users can have discussions and share content within those forums by creating and interacting with posts.

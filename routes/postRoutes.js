@@ -40,6 +40,6 @@ router.delete('/:id', verifyAPIKey, verifyToken, postController.deletePost);
 router.post('/:postId/attachments', verifyAPIKey, verifyToken, upload.array('attachments'), postController.addAttachments);
 
 
-router.put('/approve/:postId',verifyAPIKey,verifyToken, authorizeRole('moderator'),postController.approvePost);
+router.put('/approve/:postId/:forumId', verifyAPIKey, verifyToken, authorizeRole('moderator'), postController.approvePost);
 
 module.exports = router;
