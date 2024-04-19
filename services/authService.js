@@ -52,6 +52,7 @@
 
 
 // services/authService.js
+
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { generateAPIKey } = require('../utils/apiKeyGenerator');
@@ -91,6 +92,15 @@ exports.verifyToken = async (token) => {
   } catch (err) {
     throw new Error('Invalid token');
   }
+};
+
+
+exports.verifyAPIKey = async (apiKey) => {
+  const user = await User.findOne({ apiKey });
+  if (!user) {
+    throw new Error('Invalid API key');
+  }
+  return user;
 };
 
 exports.authorizeUser = async (userId, requiredRole) => {
