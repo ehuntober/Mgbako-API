@@ -34,8 +34,10 @@ exports.deleteForum = async (id) => {
   await Forum.findByIdAndDelete(id);
 };
 
-export.getForum = async() = {
-  const {id} = req.params
-  const forum = await Forum.findById(id);
-  return forum;
+exports.getForum = async (req, res) => {
+
+  await Forum.findById(id);
+  return Forum
+    
+    
 }
