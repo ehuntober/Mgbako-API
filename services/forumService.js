@@ -34,10 +34,12 @@ exports.deleteForum = async (id) => {
   await Forum.findByIdAndDelete(id);
 };
 
-exports.getForum = async (req, res) => {
 
-  await Forum.findById(id);
-  return Forum
-    
-    
-}
+exports.getForum = async (id) => {
+  try {
+    const forum = await Forum.findById(id);
+    return forum;
+  } catch (error) {
+    throw new Error('Failed to fetch forum');
+  }
+};

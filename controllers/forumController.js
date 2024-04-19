@@ -30,16 +30,20 @@ exports.deleteForum = async (req, res) => {
       res.status(400).json({ error: err.message });
     }
   };
-
-  exports.getForum = async(req,res) =>{
+  exports.getForum = async (req, res) => {
     try {
       const { id } = req.params;
       const forum = await forumService.getForum(id);
-      res.json(forum);
+      
+      if (!forum) {
+        return res.status(404).json({ error: 'Forum not found' });
+      }
+      
+      return res.json(forum);
     } catch (err) {
-      res.status(400).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
-  }
+  };
 // Implement the rest of the forum controller functions
 
 
