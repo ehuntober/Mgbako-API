@@ -26,6 +26,7 @@ exports.deleteForum = async (req, res) => {
       const { id } = req.params;
       await forumService.deleteForum(id);
       res.sendStatus(204);
+      res.json("Deleted successfully")
     } catch (err) {
       res.status(400).json({ error: err.message });
     }
