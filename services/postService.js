@@ -29,6 +29,7 @@ const webhookService = require('./webhookService');
 // };
 
 
+// post service
 exports.approvePost = async (postId) => {
   const post = await Post.findById(postId);
   
@@ -55,7 +56,6 @@ exports.approvePost = async (postId) => {
 
   return post;
 };
-
 
 
 exports.getPostsByForum = async (forumId) => {

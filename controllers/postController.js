@@ -13,11 +13,12 @@ exports.createPost = async (req, res) => {
   }
 };
 
+// post controller
 exports.approvePost = async (req, res) => {
   try {
-    const { id } = req.params;
-    console.log(id)
-    const post = await postService.approvePost(id);
+    const { postId } = req.params; // Update parameter name to postId
+    console.log(postId);
+    const post = await postService.approvePost(postId); // Pass postId to postService.approvePost
     res.json(post);
   } catch (err) {
     res.status(400).json({ error: err.message });
