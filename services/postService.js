@@ -12,6 +12,7 @@ const webhookService = require('./webhookService');
 const Forum = require('../models/Forum'); // Import the Forum model
 
 exports.approvePost = async (postId, forumId) => {
+  console.log(postId, forumId);
   const post = await Post.findById(postId);
   if (!post) {
     throw new Error('Post not found');
@@ -38,6 +39,7 @@ exports.approvePost = async (postId, forumId) => {
   const forum = await Forum.findById(forumId);
   if (forum) {
     forum.posts.push(post._id);
+    // console.log(forum)
     await forum.save();
   }
 

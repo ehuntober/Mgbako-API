@@ -18,7 +18,7 @@ exports.createPost = async (req, res) => {
 exports.approvePost = async (req, res) => {
   try {
     const { postId, forumId } = req.params; // Get both postId and forumId from the request parameters
-    console.log(postId, forumId);
+    // console.log(postId, forumId);
     const post = await postService.approvePost(postId, forumId); // Pass both postId and forumId to postService.approvePost
     res.json(post);
   } catch (err) {
