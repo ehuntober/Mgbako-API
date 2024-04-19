@@ -16,6 +16,7 @@ exports.createPost = async (req, res) => {
 exports.approvePost = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id)
     const post = await postService.approvePost(id);
     res.json(post);
   } catch (err) {
