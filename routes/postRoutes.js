@@ -16,7 +16,7 @@
 
 const express = require('express');
 const postController = require('../controllers/postController');
-const { verifyAPIKey, verifyToken } = require('../utils/middleware');
+const { verifyAPIKey, verifyToken ,  authorizeRole } = require('../utils/middleware');
 const multer = require('multer');
 const path = require('path');
 
